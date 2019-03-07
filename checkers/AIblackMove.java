@@ -31,7 +31,7 @@ public class AIblackMove {
         // 2. Pick a random move
         //return legalMoves[currentGame.generator.nextInt(legalMoves.length)];
         return minimax(currentGame.boardData, 7, true);
-
+        //update
         //Or you can create a copy of the current board like this:
         //CheckersData new_board = new CheckersData(currentGame.boardData);
         //You can then simulate a move on this new board like this:
