@@ -8,7 +8,18 @@
  *
  * @author phil
  */
+
 public class AIblackMove {
+    public class MovePair{
+	
+	public CheckersMove move;
+	public int value;
+	
+	public MovePair(CheckersMove Move, int val){
+		move = Move;
+		value = val;
+	}
+}
 
     //This is the current state of the game
     CheckersGame currentGame;
@@ -16,9 +27,9 @@ public class AIblackMove {
     CheckersMove legalMoves[];
     //this is where the algorithm will stop in the tree
     int depth;
-    int max;
-    int min;
-    CheckersMove bestMove;
+   
+  
+    CheckersMove cMove;
     // The constructor.
     public AIblackMove(CheckersGame game, CheckersMove moves[]) {
         currentGame = game;
@@ -33,7 +44,7 @@ public class AIblackMove {
         //return legalMoves[0];
         // 2. Pick a random move
         //return legalMoves[currentGame.generator.nextInt(legalMoves.length)];
-        return minimax(currentGame.boardData, 7, true);
+        return minimax(currentGame.boardData, 8, true).move;
         
         //Or you can create a copy of the current board like this:
         //CheckersData new_board = new CheckersData(currentGame.boardData);
@@ -44,47 +55,52 @@ public class AIblackMove {
         //currently legal moves using a loop and select the best one.
     }
     
-    public CheckersMove minimax(CheckersData newboard, int depth, boolean maximizingPlayer){
-    CheckersData new_board = new CheckersData(newboard);
+    public MovePair minimax(CheckersData oldboard, int depth, boolean maximizingPlayer){
     
+    CheckersMove bestMove = null;
+    //CheckersData new_board = new CheckersData(oldboard);
     
     //Get array of all black moves
-    CheckersMove blackMoves[] = new_board.getLegalMoves(CheckersData.BLACK);
+    CheckersMove blackMoves[] = oldboard.getLegalMoves(CheckersData.BLACK);
     //Get array of all red moves
-    CheckersMove redMoves[] = new_board.getLegalMoves(CheckersData.RED);
+    CheckersMove redMoves[] = oldboard.getLegalMoves(CheckersData.RED);
     
-   
     
-        if(depth == 0 || newboard.getLegalMoves(CheckersData.BLACK) == null || newboard.getLegalMoves(CheckersData.RED) == null ){
-        return bestMove;
-        }
+        if(!(depth == 0 || oldboard.getLegalMoves(CheckersData.BLACK) == null || oldboard.getLegalMoves(CheckersData.RED) == null )){
+        int max;
+        int min;
+        
             if (maximizingPlayer){
-            max = -9999;
+            
+            max = Integer.MIN_VALUE;
             //do all the legal moves, reset the board after every move to try all possible moves
             //for(int i = 0; i < blackMoves.length; i++){
             for (CheckersMove blackMove : blackMoves) {
-                new_board = new CheckersData(newboard);
+                CheckersData new_board = new CheckersData(oldboard);
+              
                 //new_board.makeMove(blackMove[i];
                 new_board.makeMove(blackMove);
                 //evals the board at given position
-                int evaluation = minimax(new_board, depth -1, false);
+                int evaluation = minimax(new_board, depth -1, false).value;
                 //compares that value to max and if its higher than max then it's the new best move
                 if (evaluation > max) {
                     max = evaluation;
                     bestMove = blackMove;
+                    //System.out.println("HERE!");
                 }
             }
-            return max;
+            return new MovePair(bestMove, max);
         }
         else {
-        min = 9999;
+            min = Integer.MAX_VALUE;
+           
             //do all the legal moves, reset the board after every move to try all possible moves
             //for(int i = 0; i < redMoves.length; i++){
             for (CheckersMove redMove : redMoves) {
-                new_board = new CheckersData(newboard);
+                CheckersData new_board = new CheckersData(oldboard);
                 new_board.makeMove(redMove);
                 //evals the board at given position
-                int evaluation = minimax(new_board, depth -1, true);
+                int evaluation = minimax(new_board, depth -1, true).value;
                 //compares that value to min and if its lower than min then it's the new best move for red
                 if (evaluation < min) {
                     min = evaluation;
@@ -92,8 +108,10 @@ public class AIblackMove {
                 }
             }       
         }
-            return min;
+            return new MovePair(bestMove, min);
     }
+        return new MovePair(bestMove,evaluate(oldboard));
+  }
     
 //    public int max_value(CheckersData newboard, int depth, boolean maximizingPlayer){
 //        //CheckersData new_board = new CheckersData(newboard);

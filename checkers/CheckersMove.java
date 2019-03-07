@@ -9,8 +9,7 @@
    public class CheckersMove {
       
       public int fromRow, fromCol;  // Position of piece to be moved.
-      public int toRow, toCol;      // Square it is to move to.
-      
+      public int toRow, toCol;      // Square it is to move to.      
       public CheckersMove(int r1, int c1, int r2, int c2) {
               // Constructor.  Just set the values of the instance variables.
          fromRow = r1;
