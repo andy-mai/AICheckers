@@ -134,7 +134,7 @@ public class CheckersGame {
         if (!gameInProgress()) {
             console("Click \"New Game\" to start a new game.");
         } else {
-            if (currentPlayer() == CheckersData.BLACK
+            /*if (currentPlayer() == CheckersData.BLACK
                     && aiBlack == true) {
                 console("Click to move black");
                 AIblackMove blacksMove = new AIblackMove(this,legalMoves);
@@ -147,8 +147,24 @@ public class CheckersGame {
                 // AIredMoveBetter redsMove = new AIredMoveBetter(this, legalMoves);
                 doMakeMove(redsMove.nextMove());
                 return;
+            }*/
+            
+            if (currentPlayer() == CheckersData.BLACK
+                    && aiBlack == true) {
+                //console("Click to move black");
+                try{Thread.sleep(50);}catch(Exception e){System.out.println("thread.sleep error: " + e.toString());}
+                AIblackMove blacksMove = new AIblackMove(this,legalMoves);
+                doMakeMove(blacksMove.nextMove());
+                return;
+            } else if (currentPlayer() == CheckersData.RED
+                    && aiRed == true) {
+                //console("Click to move red");
+                try{Thread.sleep(50);}catch(Exception e){System.out.println("thread.sleep error: " + e.toString());}
+                AIredMove redsMove = new AIredMove(this,legalMoves);
+                // AIredMoveBetter redsMove = new AIredMoveBetter(this, legalMoves);
+                doMakeMove(redsMove.nextMove());
+                return;
             }
-        
 
 
         /* If the player clicked on one of the pieces that the player

@@ -34,7 +34,7 @@ public class AIblackMove {
     public AIblackMove(CheckersGame game, CheckersMove moves[]) {
         currentGame = game;
         legalMoves = moves;
-        depth = 7;
+        depth = 6;
     }
 
     // This is where your logic goes to make a move.
@@ -44,7 +44,7 @@ public class AIblackMove {
         //return legalMoves[0];
         // 2. Pick a random move
         //return legalMoves[currentGame.generator.nextInt(legalMoves.length)];
-        return minimax(currentGame.boardData, 8, true).move;
+        return minimax(currentGame.boardData, depth, true).move;
         
         //Or you can create a copy of the current board like this:
         //CheckersData new_board = new CheckersData(currentGame.boardData);
@@ -56,7 +56,7 @@ public class AIblackMove {
     }
     
     public MovePair minimax(CheckersData oldboard, int depth, boolean maximizingPlayer){
-    
+   
     CheckersMove bestMove = null;
     //CheckersData new_board = new CheckersData(oldboard);
     
@@ -76,6 +76,7 @@ public class AIblackMove {
             //do all the legal moves, reset the board after every move to try all possible moves
             //for(int i = 0; i < blackMoves.length; i++){
             for (CheckersMove blackMove : blackMoves) {
+                
                 CheckersData new_board = new CheckersData(oldboard);
               
                 //new_board.makeMove(blackMove[i];

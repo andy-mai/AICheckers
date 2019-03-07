@@ -100,6 +100,7 @@ public class BoardPanel extends JPanel implements MouseListener {
                   }
                }
             }
+            checkersGame.doClickSquare(0, 0); //added to test
          }
 
       }  // end paintComponent()
