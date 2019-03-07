@@ -10,7 +10,8 @@
  */
 public class AIblackMove {
 
-    //This is the current state of the gameeee
+    //This is the current state of the game
+    //this is a change
     CheckersGame currentGame;
     //This array contains the legal moves at this point in the game for black.
     CheckersMove legalMoves[];
