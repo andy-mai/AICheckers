@@ -28,6 +28,7 @@ public class AIblackMove {
     CheckersMove legalMoves[];
     //this is where the algorithm will stop in the tree
     int depth;
+    
    
   
     CheckersMove cMove;
@@ -35,7 +36,8 @@ public class AIblackMove {
     public AIblackMove(CheckersGame game, CheckersMove moves[]) {
         currentGame = game;
         legalMoves = moves;
-        depth = 6;
+        depth = 8;
+    
     }
 
     // This is where your logic goes to make a move.
@@ -45,7 +47,7 @@ public class AIblackMove {
         //return legalMoves[0];
         // 2. Pick a random move
         //return legalMoves[currentGame.generator.nextInt(legalMoves.length)];
-        return minimax(currentGame.boardData, depth, true).move;
+        return minimax(currentGame.boardData, depth, -9999, 9999, true).move;
         
         //Or you can create a copy of the current board like this:
         //CheckersData new_board = new CheckersData(currentGame.boardData);
@@ -56,7 +58,7 @@ public class AIblackMove {
         //currently legal moves using a loop and select the best one.
     }
     
-    public MovePair minimax(CheckersData oldboard, int depth, boolean maximizingPlayer){
+    public MovePair minimax(CheckersData oldboard, int depth, int alpha, int beta, boolean maximizingPlayer){
    
     CheckersMove bestMove = null;
     //CheckersData new_board = new CheckersData(oldboard);
@@ -70,6 +72,7 @@ public class AIblackMove {
         if(!(depth == 0 || oldboard.getLegalMoves(CheckersData.BLACK) == null || oldboard.getLegalMoves(CheckersData.RED) == null )){
         int max;
         int min;
+      
         
             if (maximizingPlayer){
             
@@ -83,12 +86,15 @@ public class AIblackMove {
                 //new_board.makeMove(blackMove[i];
                 new_board.makeMove(blackMove);
                 //evals the board at given position
-                int evaluation = minimax(new_board, depth -1, false).value;
+                int evaluation = minimax(new_board, depth -1, alpha, beta, false).value;
                 //compares that value to max and if its higher than max then it's the new best move
                 if (evaluation > max) {
                     max = evaluation;
                     bestMove = blackMove;
-                    //System.out.println("HERE!");
+                }
+                alpha = Math.max(alpha, evaluation);
+                if (beta <= alpha){
+                    break;
                 }
             }
             return new MovePair(bestMove, max);
@@ -102,11 +108,14 @@ public class AIblackMove {
                 CheckersData new_board = new CheckersData(oldboard);
                 new_board.makeMove(redMove);
                 //evals the board at given position
-                int evaluation = minimax(new_board, depth -1, true).value;
+                int evaluation = minimax(new_board, depth -1, alpha, beta, true).value;
                 //compares that value to min and if its lower than min then it's the new best move for red
                 if (evaluation < min) {
                     min = evaluation;
-                  
+                }
+                beta = Math.min(beta, evaluation);
+                if (beta <= alpha){
+                    break;
                 }
             }       
         }
@@ -177,8 +186,13 @@ public class AIblackMove {
     // very good, but you can tweak it in any way you want.  Not only is
     // number of pieces important, but board position could also be important.
     // Also, are kings more valuable than regular pieces?  How much?
-    int evaluate(CheckersData board) {
-        return board.numBlack()+ 2*board.numBlackKing()
-                - board.numRed() - 2*board.numRedKing();
+    int evaluate(CheckersData board) { 
+        
+    int score = (10*board.getNumPieces(CheckersData.BLACK))
+                + (3*board.getNumPieces(CheckersData.BLACK_KING))
+                - (board.getNumPieces(CheckersData.RED))
+                - (3*board.getNumPieces(CheckersData.RED_KING));
+    
+    return score;
     }
 }
