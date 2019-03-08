@@ -22,6 +22,7 @@ public class AIblackMove {
 }
 
     //This is the current state of the game
+    //test
     CheckersGame currentGame;
     //This array contains the legal moves at this point in the game for black.
     CheckersMove legalMoves[];
