@@ -161,7 +161,7 @@ public class CheckersGame {
                 //console("Click to move red");
                 try{Thread.sleep(50);}catch(Exception e){System.out.println("thread.sleep error: " + e.toString());}
                 AIredMove redsMove = new AIredMove(this,legalMoves);
-                // AIredMoveBetter redsMove = new AIredMoveBetter(this, legalMoves);
+                //AIredMoveBetter redsMove = new AIredMoveBetter(this, legalMoves);
                 doMakeMove(redsMove.nextMove());
                 return;
             }

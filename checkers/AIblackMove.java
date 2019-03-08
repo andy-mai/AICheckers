@@ -124,63 +124,6 @@ public class AIblackMove {
         return new MovePair(bestMove,evaluate(oldboard));
   }
     
-//    public int max_value(CheckersData newboard, int depth, boolean maximizingPlayer){
-//        //CheckersData new_board = new CheckersData(newboard);
-//         //Get array of all black moves
-//         //CheckersMove blackMoves[] = new_board.getLegalMoves(CheckersData.BLACK);
-//         //Get array of all red moves
-//         //CheckersMove redMoves[] = new_board.getLegalMoves(CheckersData.RED);
-//        bestMoveBlack = blackMoves[0];
-//        if(depth == 0 || newboard.getLegalMoves(CheckersData.BLACK) == null){
-//            return evaluate(new_board);
-//        }
-//        max = -9999;
-//            //do all the legal moves, reset the board after every move to try all possible moves
-//            //for(int i = 0; i < blackMoves.length; i++){
-//            for (CheckersMove blackMove : blackMoves) {
-//                new_board = new CheckersData(newboard);
-//                //new_board.makeMove(redMove[i];
-//                new_board.makeMove(blackMove);
-//                //evals the board at given position
-//                int evaluation =  max_value(new_board, depth -1, true);
-//                //compares that value to max and if its higher than max then it's the new best move
-//                if (evaluation > max) {
-//                    max = evaluation;
-//                    bestMoveBlack = blackMove;
-//                }
-//            }
-//            return max;
-//        
-//    }
-//    
-//    public int min_value(CheckersData newboard, int depth, boolean maximizingPlayer){
-//        //CheckersData new_board = new CheckersData(newboard);
-//         //Get array of all black moves
-//         //CheckersMove blackMoves[] = new_board.getLegalMoves(CheckersData.BLACK);
-//         //Get array of all red moves
-//         //CheckersMove redMoves[] = new_board.getLegalMoves(CheckersData.RED);
-//        if(depth == 0 || newboard.getLegalMoves(CheckersData.RED) == null){
-//            return evaluate(new_board);
-//        }
-//        min = 9999;
-//            //do all the legal moves, reset the board after every move to try all possible moves
-//            //for(int i = 0; i < redMoves.length; i++){
-//            for (CheckersMove redMove : redMoves) {
-//                new_board = new CheckersData(newboard);
-//                //new_board.makeMove(blackMove[i];
-//                new_board.makeMove(redMove);
-//                //evals the board at given position
-//                int evaluation =  min_value(new_board, depth -1, false);
-//                //compares that value to min and if its lower than min then it's the new best move
-//                if (evaluation > max) {
-//                    max = evaluation;
-//                    //bestMove = blackMove;
-//                }
-//            }
-//            return min;
-//        
-//    }
-
     // One thing you will probably want to do is evaluate the current
     // goodness of the board.  This is a toy example, and probably isn't
     // very good, but you can tweak it in any way you want.  Not only is
@@ -188,10 +131,10 @@ public class AIblackMove {
     // Also, are kings more valuable than regular pieces?  How much?
     int evaluate(CheckersData board) { 
         
-    int score = (10*board.getNumPieces(CheckersData.BLACK))
-                + (3*board.getNumPieces(CheckersData.BLACK_KING))
-                - (board.getNumPieces(CheckersData.RED))
-                - (3*board.getNumPieces(CheckersData.RED_KING));
+    int score = (2*board.numBlack())
+                + (3*board.numBlackKing())
+                - (board.numRed())
+                - (3*board.numRedKing());
     
     return score;
     }
