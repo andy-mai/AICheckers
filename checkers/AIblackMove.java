@@ -69,11 +69,12 @@ public class AIblackMove {
     CheckersMove redMoves[] = oldboard.getLegalMoves(CheckersData.RED);
     
     
-        if(!(depth == 0 || oldboard.getLegalMoves(CheckersData.BLACK) == null || oldboard.getLegalMoves(CheckersData.RED) == null )){
+        if(depth == 0 || oldboard.getLegalMoves(CheckersData.BLACK) == null || oldboard.getLegalMoves(CheckersData.RED) == null ){
+            return new MovePair(bestMove,evaluate(oldboard));
+        }
         int max;
         int min;
       
-        
             if (maximizingPlayer){
             
             max = Integer.MIN_VALUE;
@@ -121,8 +122,8 @@ public class AIblackMove {
         }
             return new MovePair(bestMove, min);
     }
-        return new MovePair(bestMove,evaluate(oldboard));
-  }
+        
+  
     
     // One thing you will probably want to do is evaluate the current
     // goodness of the board.  This is a toy example, and probably isn't
