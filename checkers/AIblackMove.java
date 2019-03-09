@@ -36,7 +36,7 @@ public class AIblackMove {
     public AIblackMove(CheckersGame game, CheckersMove moves[]) {
         currentGame = game;
         legalMoves = moves;
-        depth = 8;
+        depth = 7;
     
     }
 
@@ -98,6 +98,7 @@ public class AIblackMove {
                     break;
                 }
             }
+            //System.out.println(max);
             return new MovePair(bestMove, max);
         }
         else {
@@ -118,8 +119,10 @@ public class AIblackMove {
                 if (beta <= alpha){
                     break;
                 }
+                
             }       
         }
+            
             return new MovePair(bestMove, min);
     }
         
@@ -132,10 +135,42 @@ public class AIblackMove {
     // Also, are kings more valuable than regular pieces?  How much?
     int evaluate(CheckersData board) { 
         
-    int score = (2*board.numBlack())
+    int score = (board.numBlack())
                 + (3*board.numBlackKing())
                 - (board.numRed())
                 - (3*board.numRedKing());
+
+         
+    		for(int y = 0; y < 8; y++){
+			for(int x = Math.floorMod(y,2); x < 8; x+=2){ //x starts at 0 when y is even and starts at 1 when y is odd
+
+				int piece = board.pieceAt(x,y);
+				
+				switch(piece){
+					case CheckersData.BLACK:
+						score += (CheckersData.boardValues[0][0] * 3);
+                                                score += (CheckersData.rowValues[0][0] * 3);
+                                                score += (CheckersData.halfValues[0][0] * 3);
+						break;
+					case CheckersData.BLACK_KING:
+						score += (CheckersData.boardValues[0][0] * 5);
+                                                score += (CheckersData.halfValues[0][0] * 5);
+						break;
+					case CheckersData.RED:
+                                                score += (CheckersData.rowValues[0][0] * -3);
+						score += (CheckersData.boardValues[0][0] * -3);
+                                                score += (CheckersData.halfValues[0][0] * -3);
+						break;
+					case CheckersData.RED_KING:
+						score += (CheckersData.boardValues[0][0] * -5);
+                                                score += (CheckersData.halfValues[0][0] * -5);
+						break;
+				}
+			}
+		}
+
+                    System.out.println(score);
+          
     
     return score;
     }
