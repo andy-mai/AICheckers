@@ -29,7 +29,7 @@ public class AIblackMove {
     CheckersMove legalMoves[];
     //this is where the algorithm will stop in the tree
     int depth;
-    
+ 
    
   
     CheckersMove cMove;
@@ -38,7 +38,7 @@ public class AIblackMove {
         currentGame = game;
         legalMoves = moves;
         depth = 5;
-    
+        
     }
 
     // This is where your logic goes to make a move.
@@ -104,7 +104,8 @@ public class AIblackMove {
 //        int evaluation = minimax(new_board, depth -1, alpha, beta, !maximizingPlayer).value;
         
         //compares that value to max and if its higher than max then it's the new best move
-            if (max.value <= evaluation.value) {
+        if(Math.max(max.value, evaluation.value) == evaluation.value){
+            //if (max.value <= evaluation.value) {
                 max = evaluation;
                 //bestMove = blackMoves[i]; 
             }
@@ -133,7 +134,8 @@ public class AIblackMove {
                 //evals the board at given position
                 MovePair evaluation = minimax(new_board, bestMove, depth -1, alpha, beta, !maximizingPlayer);
                 //compares that value to min and if its lower than min then it's the new best move for red
-                if (min.value >= evaluation.value) {
+                if(Math.min(min.value, evaluation.value) == evaluation.value){
+                //if (min.value >= evaluation.value) {
                     min = evaluation;
                 }   
                 beta = Math.min(beta, evaluation.value);
@@ -142,23 +144,25 @@ public class AIblackMove {
                 }
                 
             }    
-             return min;
+             return min; //returns movepair min which will old the bestmove and min value
         }
             
-           
     }
         
-  
     
+   
     // One thing you will probably want to do is evaluate the current
     // goodness of the board.  This is a toy example, and probably isn't
     // very good, but you can tweak it in any way you want.  Not only is
     // number of pieces important, but board position could also be important.
     // Also, are kings more valuable than regular pieces?  How much?
     int evaluate(CheckersData board) { 
-        
     int score = 0;
-    
+  
+      int totalPieces = (board.getNumPieces(CheckersData.RED)) + (board.getNumPieces(CheckersData.BLACK));
+      int totalKings = (board.numBlackKing() + board.numRedKing());
+      
+     
             double boardValues[][] = {
               {6, 0, 6, 0, 6, 0, 6, 0},
               {0, 3, 0, 3, 0, 3, 0, 6},
@@ -174,10 +178,10 @@ public class AIblackMove {
 //          double boardValues[][] = {
 //              {4, 0, 4, 0, 4, 0, 4, 0},
 //              {0, 2, 0, 2, 0, 2, 0, 4},
-//              {4, 0, 3, 0, 3, 0, 2, 0},
-//              {0, 2, 0, 4, 0, 3, 0, 4},
-//              {4, 0, 3, 0, 4, 0, 2, 0},
-//              {0, 2, 0, 3, 0, 3, 0, 4},
+//              {3, 0, 3, 0, 3, 0, 2, 0},
+//              {0, 2, 0, 4, 0, 3, 0, 3},
+//              {3, 0, 3, 0, 4, 0, 2, 0},
+//              {0, 2, 0, 3, 0, 3, 0, 3},
 //              {4, 0, 2, 0, 2, 0, 2, 0},
 //              {0, 4, 0, 4, 0, 4, 0, 4}
 //
@@ -186,16 +190,16 @@ public class AIblackMove {
             double rowValues[][] = {
               {5, 0, 5, 0, 5, 0, 5, 0},
               {0, 1, 0, 3, 0, 3, 0, 1},
-              {1, 0, 3, 0, 3, 0, 1, 0},
-              {0, 1, 0, 2, 0, 2, 0, 1},
-              {1, 0, 2, 0, 2, 0, 1, 0},
-              {0, 1, 0, 3, 0, 3, 0, 1},
+              {1, 0, 3, 0, 3, 0, 2, 0},
+              {0, 2, 0, 5, 0, 3, 0, 1},
+              {1, 0, 3, 0, 5, 0, 2, 0},
+              {0, 2, 0, 3, 0, 3, 0, 1},
               {1, 0, 3, 0, 3, 0, 1, 0},
               {0, 5, 0, 5, 0, 5, 0, 5}
 
       };
             double endValues[][] = {
-              {10, 0, 10, 0, 10, 0, 10, 0},
+              {5, 0, 5, 0, 5, 0, 5, 0},
               {0, 10, 0, 10, 0, 10, 0, 10},
               {10, 0, 20, 0, 20, 0, 10, 0},
               {0, 20, 0, 20, 0, 20, 0, 10},
@@ -216,78 +220,17 @@ public class AIblackMove {
               {0, 5, 0, 5, 0, 5, 0, 5}
 
       };
-        int total = (board.getNumPieces(CheckersData.RED)) + (board.getNumPieces(CheckersData.BLACK));
-            score += (2*board.numBlack())
-                + (board.numBlackKing())
-                - (2*board.numRed())
-                - (3*board.numRedKing());
-            
-//         for(int col = 0; col < 8; col++){
-//            for(int row = Math.floorMod(col,2); row < 8; row+=2){ 
-//                int piece = board.pieceAt(row,col);
-//                switch(piece){
-//                        case CheckersData.BLACK:
-//                                score += (2*boardValues[row][col]); 
-//                                score += (2*rowValues[row][col]);
-//                                //score += (halfValues[row][col]);
-//                                break;
-//                        case CheckersData.BLACK_KING:
-//                                score += (boardValues[row][col]); 
-//                                score += (rowValues[row][col]);
-//                                //score += (3 * halfValues[row][col]);
-//                                break;
-//                        case CheckersData.RED:
-//                                score -= (2*rowValues[row][col]); 
-//                                score -= (2*boardValues[row][col]);
-//                                //score -= (halfValues[row][col]);
-//                                break;
-//                        case CheckersData.RED_KING:
-//                                score -= (3 * rowValues[row][col]);
-//                                score -= (3 * boardValues[row][col]); 
-//                                //score -= (3 * halfValues[row][col]);
-//                                break;
-//                }
-//            }
-//        }
-
-        if((total) < 8 ){
-            score = 0;
-            score += (3*board.numBlack())
-                + (2*board.numBlackKing())
-                - (4*board.numRed())
-                - (5*board.numRedKing());
-            
-          for(int col = 0; col < 8; col++){
-            for(int row = Math.floorMod(col,2); row < 8; row+=2){ 
-                int piece = board.pieceAt(row,col);
-                switch(piece){
-                        case CheckersData.BLACK:
-                                score += (3* boardValues[row][col]);
-                                score += (3*endValues[row][col]); 
-
-                                break;
-                        case CheckersData.BLACK_KING:
-                                score += (2* boardValues[row][col]);
-                                score += (2*endValues[row][col]); 
-                               // score += (3 * halfValues[row][col]);
-                                break;
-                        case CheckersData.RED:
-                                score += (4 * boardValues[row][col]);
-                                score -= (4 * endValues[row][col]); 
-                                //score -= (2*endValues[row][col]);
-                                //score -= (halfValues[row][col]);
-                                break;
-                        case CheckersData.RED_KING:
-                                score += (5* boardValues[row][col]);
-                                score -= (5 * endValues[row][col]); 
-                                //score -= (3 * halfValues[row][col]);
-                                break;
-                }
-            }
-        }
-          System.out.println("end game " + score);
-        } else {
-            score += (2*board.numBlack())
+      
+          if (totalKings == totalPieces){
+          System.out.print("Endgame ");
+          score = 0;
+          score += (10*board.numBlack())
+                + (20*board.numBlackKing())
+                - (5*board.numRed())
+                - (10*board.numRedKing());
+          
+     } //else {
+         score += (2*board.numBlack())
                 + (board.numBlackKing())
                 - (2*board.numRed())
                 - (3*board.numRedKing());
@@ -298,31 +241,30 @@ public class AIblackMove {
                 switch(piece){
                         case CheckersData.BLACK:
                                 score += (2*boardValues[row][col]); 
-                                score += (2*rowValues[row][col]);
-                                score += (halfValues[row][col]);
+                                score += (3*rowValues[row][col]);
+                                //score += (halfValues[row][col]);
                                 break;
                         case CheckersData.BLACK_KING:
-                                score += (boardValues[row][col]); 
-                               score += (3 * halfValues[row][col]);
+                               score += (2*boardValues[row][col]); 
+                               score += (3*rowValues[row][col]);
+                               //score += (3*halfValues[row][col]);
                                 break;
                         case CheckersData.RED:
-                                score -= (2*rowValues[row][col]); 
                                 score -= (2*boardValues[row][col]);
-                                score -= (halfValues[row][col]);
+                                //score -= (3*rowValues[row][col]); 
+                                //score -= (halfValues[row][col]);
                                 break;
                         case CheckersData.RED_KING:
-                                score -= (3 * boardValues[row][col]); 
-                                score -= (3 * halfValues[row][col]);
+                                score -= (5*boardValues[row][col]); 
+                                //score += (5*rowValues[row][col]);
+                                //score -= (3*halfValues[row][col]);
                                 break;
                 }
             }
         }
-        System.out.println(score);
-        }
-
-                   
-          
-    
-    return score;
+         
+          System.out.println(score);
+        //  }
+        return score;
     }
 }

@@ -134,20 +134,6 @@ public class CheckersGame {
         if (!gameInProgress()) {
             console("Click \"New Game\" to start a new game.");
         } else {
-            /*if (currentPlayer() == CheckersData.BLACK
-                    && aiBlack == true) {
-                console("Click to move black");
-                AIblackMove blacksMove = new AIblackMove(this,legalMoves);
-                doMakeMove(blacksMove.nextMove());
-                return;
-            } else if (currentPlayer() == CheckersData.RED
-                    && aiRed == true) {
-                console("Click to move red");
-                AIredMove redsMove = new AIredMove(this,legalMoves);
-                // AIredMoveBetter redsMove = new AIredMoveBetter(this, legalMoves);
-                doMakeMove(redsMove.nextMove());
-                return;
-            }*/
             
             if (currentPlayer() == CheckersData.BLACK
                     && aiBlack == true) {
